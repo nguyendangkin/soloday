@@ -2,13 +2,18 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { getStartDate, clearData, addLoveHistory } from "@/lib/storage";
 import { calculateTimeDiff } from "@/lib/time-utils";
 import Counter from "../components/Counter";
 import Achievements from "../components/Achievements";
 import ShareCard from "../components/ShareCard";
-import CongratulationModal from "../components/CongratulationModal";
 import Footer from "../components/Footer";
+
+const CongratulationModal = dynamic(
+    () => import("../components/CongratulationModal"),
+    { ssr: false }
+);
 
 export default function CounterPage() {
     const router = useRouter();

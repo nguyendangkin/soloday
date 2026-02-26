@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { getLoveHistory, removeLoveHistory } from "@/lib/storage";
 import type { LoveHistory } from "@/lib/storage";
 import { getLatestAchievement } from "@/lib/achievements";
-import { toPng } from "html-to-image";
 import Footer from "../components/Footer";
 
 export default function HistoryPage() {
@@ -182,6 +181,7 @@ function HistoryCard({ record, index, onDelete }: HistoryCardProps) {
         const el = document.getElementById(`history-card-${record.id}`);
         if (!el) return;
         try {
+            const { toPng } = await import("html-to-image");
             const dataUrl = await toPng(el, {
                 pixelRatio: 2,
                 quality: 1,

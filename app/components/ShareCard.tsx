@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useRef } from "react";
-import { toPng } from "html-to-image";
 import { getLatestAchievement } from "@/lib/achievements";
 import { getShareQuote } from "@/lib/time-utils";
 
@@ -18,6 +17,7 @@ export default function ShareCard({ totalDays }: ShareCardProps) {
         if (!cardRef.current) return;
 
         try {
+            const { toPng } = await import("html-to-image");
             const dataUrl = await toPng(cardRef.current, {
                 pixelRatio: 2,
                 quality: 1,
