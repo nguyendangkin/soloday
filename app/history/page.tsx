@@ -13,7 +13,9 @@ export default function HistoryPage() {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- hydration guard: read localStorage after mount
         setMounted(true);
+         
         setHistory(getLoveHistory());
     }, []);
 
@@ -169,7 +171,7 @@ interface HistoryCardProps {
 function HistoryCard({ record, index, onDelete }: HistoryCardProps) {
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const achievement = getLatestAchievement(record.totalDays);
-    const cardRef = useCallback(() => document.getElementById(`history-card-${record.id}`), [record.id]);
+
 
     const startDate = new Date(record.startDate);
     const endDate = new Date(record.endDate);

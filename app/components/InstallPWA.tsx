@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 
 interface BeforeInstallPromptEvent extends Event {
     prompt(): Promise<void>;
@@ -123,7 +124,7 @@ export default function InstallPWA() {
 
                             {/* App icon */}
                             <div className="install-modal-icon">
-                                <img
+                                <Image
                                     src="/icons/icon-192x192.png"
                                     alt="Solo Days"
                                     width={72}

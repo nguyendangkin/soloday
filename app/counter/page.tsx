@@ -26,12 +26,14 @@ export default function CounterPage() {
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- hydration guard
         setMounted(true);
         const saved = getStartDate();
         if (!saved) {
             router.replace("/");
             return;
         }
+         
         setStartDate(saved);
 
         const update = () => {
@@ -225,14 +227,17 @@ export default function CounterPage() {
 
 function ConfettiEffect() {
     const colors = ["#fbbf24", "#34d399", "#60a5fa", "#f472b6", "#a78bfa", "#fb923c"];
-    const particles = Array.from({ length: 30 }, (_, i) => ({
-        id: i,
-        left: `${Math.random() * 100}%`,
-        delay: `${Math.random() * 1.5}s`,
-        size: 5 + Math.random() * 8,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        rotation: Math.random() * 360,
-    }));
+    const [particles] = useState(() =>
+        Array.from({ length: 30 }, (_, i) => ({
+            id: i,
+            left: `${Math.random() * 100}%`,
+            delay: `${Math.random() * 1.5}s`,
+            size: 5 + Math.random() * 8,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rotation: Math.random() * 360,
+            borderRadius: Math.random() > 0.5 ? "50%" : "2px",
+        }))
+    );
 
     return (
         <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 100 }}>
@@ -246,7 +251,7 @@ function ConfettiEffect() {
                         width: p.size,
                         height: p.size,
                         backgroundColor: p.color,
-                        borderRadius: Math.random() > 0.5 ? "50%" : "2px",
+                        borderRadius: p.borderRadius,
                         transform: `rotate(${p.rotation}deg)`,
                     }}
                 />

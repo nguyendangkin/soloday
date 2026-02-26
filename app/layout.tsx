@@ -25,11 +25,21 @@ export const metadata: Metadata = {
       "Đếm ngày solo, mở khóa thành tựu vui nhộn, chia sẻ với bạn bè!",
     type: "website",
     locale: "vi_VN",
+    url: "https://solo-days.app",
+    images: [
+      {
+        url: "/icons/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Solo Days — Đếm Ngày Solo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Solo Days — Đếm Ngày Solo",
     description: "Đếm ngày solo, mở khóa thành tựu, chia sẻ niềm vui!",
+    images: ["/icons/og-image.png"],
   },
 };
 

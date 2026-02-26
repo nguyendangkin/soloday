@@ -1,21 +1,22 @@
-# 📋 AUDIT REPORT — Soloday
+# 🔍 AUDIT REPORT — Soloday
 
-**Ngày audit**: 2026-02-26  
+**Ngày**: 2026-02-26  
 **Phiên bản**: 0.1.0  
-**Stack**: Next.js 16.1.6 · React 19.2.3 · Tailwind CSS 4  
+**Tech Stack**: Next.js 16.1.6 + React 19.2.3 + TypeScript 5 + Tailwind 4  
 
 ---
 
-## 📊 Dashboard Tổng Quan
+## 📊 Tổng quan
 
-| Kiểm tra | Kết quả | Trạng thái |
-|----------|---------|------------|
-| **Security Scan** (`npm audit`) | 0 vulnerabilities | 🟢 PASS |
-| **Type Check** (`tsc --noEmit`) | 0 errors | 🟢 PASS |
-| **Unit Tests** (`vitest run`) | 45/45 pass | 🟢 PASS |
-| **Lint** (`eslint`) | 10 errors, 3 warnings | 🔴 FAIL |
-| **SEO Audit** | 4/6 tiêu chí đạt | 🟡 PARTIAL |
-| **Security Audit** | 3 issues → đã fix | 🟢 FIXED |
+| Hạng mục | Trạng thái | Ghi chú |
+|---|---|---|
+| Security Scan | ✅ PASS | 0 vulnerabilities |
+| TypeScript Check | ✅ PASS | Không có lỗi |
+| ESLint | ❌ FAIL | 10 errors, 3 warnings |
+| SEO Audit | ⚠️ WARNING | Thiếu OG Image, robots.txt |
+| PWA Config | ✅ PASS | manifest.json + sw.js đầy đủ |
+
+**Điểm tổng: 3/5 PASS**
 
 ---
 
@@ -25,108 +26,122 @@
 npm audit → found 0 vulnerabilities
 ```
 
-Chi tiết xem [SECURITY_AUDIT.md](./SECURITY_AUDIT.md). Đã vá 3 vấn đề:
-- ✅ importBackup hardened (file size limit, per-record validation)
-- ✅ Security headers (X-Frame-Options, X-Content-Type-Options, etc.)
-- ✅ partnerName sanitization
+✅ **Không có lỗ hổng bảo mật nào** trong dependency tree.
+
+**Điểm cộng**:
+- `poweredByHeader: false` trong `next.config.ts` (ẩn header X-Powered-By)
+- `reactStrictMode: true` bật chế độ nghiêm ngặt
+- Không hardcode secret/API key nào
 
 ---
 
-## 2. 📝 Lint Check (ESLint)
+## 2. 📝 ESLint — 10 Errors, 3 Warnings
 
-**Kết quả**: ✖ 13 problems (10 errors, 3 warnings)
+### ❌ Errors
 
-### Errors — `react-hooks/set-state-in-effect` (6 lần)
+#### `app/counter/page.tsx` — 7 lỗi `react-hooks/purity`
+- **Vấn đề**: Gọi `Math.random()` trực tiếp trong render body của `ConfettiEffect` (dòng 228-234, 249)
+- **Nguyên nhân**: `Math.random()` là impure function, gây ra kết quả không ổn định khi re-render
+- **Fix**: Wrap logic tạo particles vào `useMemo` hoặc `useState` + `useEffect`
 
-| File | Dòng | Vấn đề |
-|------|------|--------|
-| `page.tsx` | 17 | `setExisting()` trong useEffect |
-| `counter/page.tsx` | 24-25 | `setMounted()`, `setStartDate()` trong useEffect |
-| `counter/page.tsx` | 34 | `setTotalDays()` trong useEffect |
-| `history/page.tsx` | 16-17 | `setMounted()`, `setHistory()` trong useEffect |
-
-> **Phân tích**: Đây là pattern chuẩn cho client-side hydration check (`setMounted(true)`) và đọc data từ localStorage (external system). ESLint React 19 mới cảnh báo nhưng **đây là false positive** cho use case SSR hydration. Không gây regression.
-
-### Errors — `react-hooks/purity` (4 lần)
-
-| File | Dòng | Vấn đề |
-|------|------|--------|
-| `counter/page.tsx` | 228-234 | `Math.random()` trong `ConfettiEffect` render |
-| `counter/page.tsx` | 249 | `Math.random()` trong inline style |
-
-> **Phân tích**: `ConfettiEffect` dùng `Math.random()` để tạo vị trí/màu confetti. Gọi impure function trong render có thể gây kết quả không nhất quán khi re-render. **Nên fix** bằng cách memoize particles với `useMemo`.
-
-### Warnings — `@typescript-eslint/no-unused-vars` (3 lần)
-
-| File | Dòng | Biến |
-|------|------|------|
-| `counter/page.tsx` | ? | `confetti` state (used) |
-| `history/page.tsx` | 172 | `cardRef` — assigned nhưng không dùng trực tiếp |
-
----
-
-## 3. 🔤 Type Check (TypeScript)
-
-```
-tsc --noEmit → 0 errors
+```diff
+- const particles = Array.from({ length: 30 }, (_, i) => ({
+-     ...
+-     left: `${Math.random() * 100}%`,
+-     ...
+- }));
++ const [particles] = useState(() =>
++     Array.from({ length: 30 }, (_, i) => ({
++         ...
++         left: `${Math.random() * 100}%`,
++         ...
++     }))
++ );
 ```
 
-✅ Tất cả type definitions đúng, không có type mismatch.
+#### `app/history/page.tsx:16` — 1 lỗi `react-hooks/set-state-in-effect`
+- **Vấn đề**: `setMounted(true)` gọi trực tiếp trong `useEffect`
+- **Fix**: Dùng pattern khác hoặc chấp nhận đây là pattern chuẩn cho hydration check
+
+#### `app/page.tsx:17` — 1 lỗi `react-hooks/set-state-in-effect`
+- **Vấn đề**: `setExisting(getStartDate())` gọi trực tiếp trong `useEffect`
+- **Fix**: Tương tự, đây là pattern phổ biến để đọc localStorage
+
+#### `app/counter/page.tsx:29` — 1 lỗi `react-hooks/set-state-in-effect`
+- **Vấn đề**: `setMounted(true)` trong `useEffect`
+
+### ⚠️ Warnings
+
+| File | Dòng | Lỗi |
+|---|---|---|
+| `app/history/page.tsx` | 172 | `cardRef` được gán nhưng không sử dụng |
 
 ---
 
-## 4. 🧪 Unit Tests
+## 3. ✅ TypeScript Check
 
 ```
-✓ achievements.test.ts (14 tests)
-✓ storage.test.ts (18 tests)
-✓ time-utils.test.ts (13 tests)
-
-Test Files: 3 passed (3)
-Tests: 45 passed (45)
-Duration: 1.34s
+npx tsc --noEmit → 0 errors
 ```
 
-✅ 100% pass rate. Tuy nhiên:
-- ⚠️ **Thiếu component tests** — chỉ có unit tests cho lib functions
-- ⚠️ **Thiếu E2E tests** — không có Playwright/Cypress
+✅ **Không có lỗi TypeScript** — Type safety đầy đủ.
 
 ---
 
-## 5. 🔍 SEO Audit
+## 4. 🔎 SEO Audit
 
-| Tiêu chí | Trạng thái | Chi tiết |
-|----------|------------|----------|
-| **Title Tag** | ✅ | `Solo Days — Đếm Ngày Solo` |
-| **Meta Description** | ✅ | Đầy đủ, mô tả chính xác |
-| **OpenGraph** | ✅ | Title, description, type, locale |
-| **Twitter Card** | ✅ | summary_large_image |
-| **OG Image** | ❌ | **Thiếu** `og:image` — ảnh preview khi share lên mạng xã hội |
-| **Heading H1** | ✅ | 1 H1 mỗi trang |
-| **Semantic HTML** | ✅ | Dùng `<main>`, `<footer>`, `<h1>`, `<h2>` |
-| **Viewport** | ✅ | `width=device-width, initialScale=1` |
-| **Language** | ✅ | `<html lang="vi">` |
-| **Manifest** | ✅ | PWA manifest đầy đủ |
-| **Favicon/Icons** | ✅ | apple-touch-icon + manifest icons |
-| **Keywords** | ✅ | Có meta keywords |
-| **Canonical URL** | ❌ | **Thiếu** canonical URL |
+### ✅ Đã có
+- `<html lang="vi">` — Đúng ngôn ngữ
+- `<title>` — "Solo Days — Đếm Ngày Solo"
+- `<meta name="description">` — Đầy đủ mô tả
+- `<meta name="keywords">` — 5 keywords
+- **OpenGraph** — title, description, type, locale
+- **Twitter Cards** — card, title, description
+- **Viewport** — Responsive config
+- **PWA Manifest** — name, short_name, icons, display, theme_color
+
+### ⚠️ Thiếu / Cần cải thiện
+
+| Vấn đề | Mức độ | Gợi ý |
+|---|---|---|
+| Thiếu `og:image` | **Cao** | Thêm ảnh preview khi share trên MXH |
+| Thiếu `og:url` | Trung bình | Thêm canonical URL |
+| Thiếu `robots.txt` | Trung bình | Cho phép crawler index |
+| Thiếu `sitemap.xml` | Thấp | Tạo sitemap cho SEO |
+| Sub-pages thiếu metadata | Trung bình | `/counter`, `/history` nên có riêng |
 
 ---
 
-## 📌 Khuyến Nghị Sửa Lỗi (Theo Ưu Tiên)
+## 5. 📱 PWA Audit
 
-### 🔴 Nên Fix Ngay
+### ✅ Đã có
+- `manifest.json` — Đầy đủ name, short_name, icons, display, theme_color
+- `sw.js` — Service Worker đã đăng ký
+- Icons 192x192 và 512x512 (cả `any` và `maskable`)
+- Apple Touch Icon configured
+- Apple Mobile Web App meta tags
 
-1. **ConfettiEffect — Math.random trong render** → Wrap particles trong `useMemo` hoặc `useState` với initializer
-2. **Unused cardRef** trong `history/page.tsx` → Xóa biến không dùng
+### ⚠️ Lưu ý
+- `beforeinstallprompt` handler sử dụng inline script (`dangerouslySetInnerHTML`)
 
-### 🟡 Nên Cải Thiện
+---
 
-3. **Thiếu OG Image** → Tạo og-image.png và thêm vào metadata
-4. **Thiếu Canonical URL** → Thêm `metadataBase` và `alternates.canonical` trong layout.tsx
+## 🛠️ Đề xuất sửa (theo ưu tiên)
 
-### 🟢 Cân Nhắc Sau
+### 🔴 Ưu tiên cao
+1. **Fix ESLint `react-hooks/purity`** → Wrap `Math.random()` vào `useState` initializer trong `ConfettiEffect`
+2. **Thêm `og:image`** → Tạo ảnh social preview 1200x630
 
-5. **Component tests** → Thêm React Testing Library cho các component chính
-6. **E2E tests** → Thêm Playwright cho critical user flows
-7. **ESLint set-state-in-effect** → Accepted pattern cho SSR hydration, có thể thêm eslint-disable comment nếu cần clean output
+### 🟡 Ưu tiên trung bình  
+3. **Thêm `robots.txt`** → `public/robots.txt`
+4. **Thêm metadata cho sub-pages** → `/counter` và `/history`
+5. **Xoá biến không dùng** `cardRef` trong `history/page.tsx`
+
+### 🟢 Ưu tiên thấp
+6. **Thêm `sitemap.xml`** → Cho SEO
+7. **Thêm `og:url`** và canonical link
+8. **Pattern `setMounted`** → Cân nhắc dùng `useSyncExternalStore` hoặc suppress lint rule nếu intentional
+
+---
+
+*Báo cáo được tạo bởi Antigravity — 2026-02-26T12:48+07:00*

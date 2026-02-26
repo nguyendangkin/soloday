@@ -14,6 +14,7 @@ export default function Home() {
   const [existing, setExisting] = useState<Date | null>(null);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydration guard: must read localStorage after mount
     setExisting(getStartDate());
   }, []);
 

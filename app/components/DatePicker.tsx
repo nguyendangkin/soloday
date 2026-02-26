@@ -18,7 +18,7 @@ function getDaysInMonth(month: number, year: number): number {
 }
 
 export default function DatePicker({ onSelect }: DatePickerProps) {
-    const now = new Date();
+    const [now] = useState(() => new Date());
     const currentYear = now.getFullYear();
     const currentMonth = now.getMonth();
 
