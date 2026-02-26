@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   description:
     "Bạn đã solo bao lâu rồi? Đếm ngày, mở khóa thành tựu vui nhộn, và chia sẻ với bạn bè!",
   keywords: ["solo day", "đếm ngày", "single life", "fun counter", "achievements"],
+  alternates: {
+    canonical: "https://soloday.onrender.com",
+  },
   openGraph: {
     title: "Solo Day — Đếm Ngày Solo",
     description:
