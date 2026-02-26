@@ -30,7 +30,7 @@ export default function ShareCard({ totalDays }: ShareCardProps) {
             });
 
             const link = document.createElement("a");
-            link.download = `solo-days-${totalDays}.png`;
+            link.download = `soloday-${totalDays}.png`;
             link.href = dataUrl;
             link.click();
         } catch {
@@ -138,7 +138,7 @@ export default function ShareCard({ totalDays }: ShareCardProps) {
                         fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif",
                     }}
                 >
-                    solo-days.app
+                    soloday.onrender.com
                 </div>
             </div>
 

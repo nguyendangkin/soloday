@@ -137,7 +137,7 @@ describe("Storage — Import Backup", () => {
 
     it("should reject file with missing data field", async () => {
         const data = JSON.stringify({
-            appId: "solo-days",
+            appId: "soloday",
             version: 1,
         });
         const file = new File([data], "backup.json", {
@@ -150,7 +150,7 @@ describe("Storage — Import Backup", () => {
 
     it("should reject file with invalid startDate", async () => {
         const data = JSON.stringify({
-            appId: "solo-days",
+            appId: "soloday",
             version: 1,
             data: {
                 startDate: "not-a-date",
@@ -167,7 +167,7 @@ describe("Storage — Import Backup", () => {
 
     it("should successfully import valid backup", async () => {
         const data = JSON.stringify({
-            appId: "solo-days",
+            appId: "soloday",
             version: 1,
             exportedAt: new Date().toISOString(),
             data: {
@@ -207,7 +207,7 @@ describe("Storage — Import Backup", () => {
         expect(hasStartDate()).toBe(true);
 
         const data = JSON.stringify({
-            appId: "solo-days",
+            appId: "soloday",
             version: 1,
             exportedAt: new Date().toISOString(),
             data: {

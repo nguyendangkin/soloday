@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Solo Days — Đếm Ngày Solo 🥰
 
-## Getting Started
+> Bạn đã solo bao lâu rồi? Đếm ngày, mở khóa thành tựu vui nhộn, và chia sẻ với bạn bè!
 
-First, run the development server:
+🔗 **Live Demo:** [soloday.onrender.com](https://soloday.onrender.com)
+
+---
+
+## ✨ Tính năng
+
+- **🔢 Bộ đếm ngày solo** — Xem bạn đã solo bao nhiêu ngày, giờ, phút, giây (realtime)
+- **🏆 20 thành tựu** — Mở khóa badge từ 7 ngày đến 60 năm (✨ Khởi Đầu Vui → 🌌 Vũ Trụ)
+- **📸 Chia sẻ ảnh** — Tải card chia sẻ đẹp để khoe với bạn bè
+- **💕 Lịch sử tình yêu** — Khi hết solo, cuộc tình được lưu lại cùng thành tựu
+- **💾 Backup & Restore** — Sao lưu và khôi phục dữ liệu bằng file JSON
+- **📱 PWA** — Cài đặt trực tiếp lên điện thoại như app native
+- **⚡ Offline** — Hoạt động kể cả khi không có mạng (Service Worker)
+- **📅 Chọn ngày bắt đầu** — Date picker tinh tế, chọn đúng ngày bạn bắt đầu solo
+
+## 🛠️ Tech Stack
+
+| Công nghệ | Phiên bản |
+|---|---|
+| **Next.js** | 16 |
+| **React** | 19 |
+| **TypeScript** | 5 |
+| **CSS** | Vanilla (không framework) |
+| **Testing** | Vitest + Testing Library |
+| **Export** | Static HTML (output: export) |
+
+## 🚀 Chạy local
 
 ```bash
+# Clone repo
+git clone https://github.com/nguyendangkin/soloday.git
+cd soloday
+
+# Cài dependencies
+npm install
+
+# Chạy dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Mở [http://localhost:3000](http://localhost:3000) để xem app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📦 Build & Deploy
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Build static site
+npm run build
 
-## Learn More
+# Output nằm trong thư mục /out
+```
 
-To learn more about Next.js, take a look at the following resources:
+App được build thành static HTML, có thể deploy lên bất kỳ hosting nào (Render, Vercel, Netlify, GitHub Pages...).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🧪 Testing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# Chạy test
+npm test
 
-## Deploy on Vercel
+# Chạy test (watch mode)
+npm run test:watch
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📂 Cấu trúc dự án
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+soloday/
+├── app/
+│   ├── components/       # UI components
+│   │   ├── Achievements.tsx     # Hệ thống thành tựu
+│   │   ├── BackupRestore.tsx    # Sao lưu & khôi phục
+│   │   ├── CongratulationModal.tsx  # Modal chúc mừng hết solo
+│   │   ├── Counter.tsx          # Bộ đếm realtime
+│   │   ├── DatePicker.tsx       # Chọn ngày bắt đầu
+│   │   ├── InstallPWA.tsx       # Nút cài PWA
+│   │   ├── ShareCard.tsx        # Card chia sẻ ảnh
+│   │   └── Footer.tsx           # Footer
+│   ├── counter/          # Trang đếm ngày
+│   ├── history/          # Trang lịch sử tình yêu
+│   ├── globals.css       # Styles
+│   ├── layout.tsx        # Root layout + SEO
+│   └── page.tsx          # Trang chủ
+├── lib/
+│   ├── achievements.ts   # Logic thành tựu (20 mốc)
+│   ├── storage.ts        # LocalStorage + Backup/Restore
+│   └── time-utils.ts     # Tính toán thời gian
+├── public/
+│   ├── manifest.json     # PWA manifest
+│   ├── sw.js            # Service Worker
+│   └── icons/           # App icons
+└── package.json
+```
+
+## 🎯 Hệ thống thành tựu
+
+| Mốc | Badge | Tên |
+|-----|-------|-----|
+| 7 ngày | ✨ | Khởi Đầu Vui |
+| 30 ngày | 🎒 | Nhà Thám Hiểm |
+| 100 ngày | 🎯 | Bách Nhật |
+| 365 ngày | 🎉 | 1 Năm Rực Rỡ |
+| 1,000 ngày | 🚀 | Vượt Ngàn |
+| 1,825 ngày | ⭐ | Huyền Thoại |
+| 3,650 ngày | 🌟 | Vĩnh Cửu |
+| ... | ... | ... |
+| 21,900 ngày | 🌌 | Vũ Trụ |
+
+## 📄 License
+
+MIT
+
+---
+
+*🥰 Yêu bản thân là điều tuyệt vời nhất!*

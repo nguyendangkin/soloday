@@ -15,7 +15,7 @@ export default function HistoryPage() {
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect -- hydration guard: read localStorage after mount
         setMounted(true);
-         
+
         setHistory(getLoveHistory());
     }, []);
 
@@ -319,7 +319,7 @@ function HistoryCard({ record, index, onDelete }: HistoryCardProps) {
                         fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif",
                     }}
                 >
-                    solo-days.app
+                    soloday.onrender.com
                 </div>
             </div>
 

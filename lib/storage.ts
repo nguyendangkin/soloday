@@ -122,7 +122,7 @@ export function exportBackup(): void {
     if (!isBrowser()) return;
 
     const backup: BackupData = {
-        appId: "solo-days",
+        appId: "soloday",
         version: 1,
         exportedAt: new Date().toISOString(),
         data: {
@@ -140,7 +140,7 @@ export function exportBackup(): void {
         .toISOString()
         .slice(0, 10)
         .replace(/-/g, "");
-    link.download = `solo-days-backup-${dateStr}.json`;
+    link.download = `soloday-backup-${dateStr}.json`;
     link.href = url;
     link.click();
     URL.revokeObjectURL(url);
@@ -170,7 +170,7 @@ export async function importBackup(
         const parsed = JSON.parse(text) as BackupData;
 
         // Validate top-level structure
-        if (parsed.appId !== "solo-days" || typeof parsed.version !== "number") {
+        if ((parsed.appId !== "soloday" && parsed.appId !== "solo-days") || typeof parsed.version !== "number") {
             return {
                 success: false,
                 message: "File không đúng định dạng Solo Days.",

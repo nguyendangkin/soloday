@@ -15,6 +15,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://soloday.onrender.com"),
   title: "Solo Days — Đếm Ngày Solo",
   description:
     "Bạn đã solo bao lâu rồi? Đếm ngày, mở khóa thành tựu vui nhộn, và chia sẻ với bạn bè!",
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
       "Đếm ngày solo, mở khóa thành tựu vui nhộn, chia sẻ với bạn bè!",
     type: "website",
     locale: "vi_VN",
-    url: "https://solo-days.app",
+    url: "https://soloday.onrender.com",
     images: [
       {
         url: "/icons/og-image.png",

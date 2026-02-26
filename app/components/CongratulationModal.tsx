@@ -46,7 +46,7 @@ export default function CongratulationModal({ totalDays, partnerName, onClose }:
             });
 
             const link = document.createElement("a");
-            link.download = `solo-days-goodbye-${totalDays}.png`;
+            link.download = `soloday-goodbye-${totalDays}.png`;
             link.href = dataUrl;
             link.click();
         } catch {
@@ -300,7 +300,7 @@ export default function CongratulationModal({ totalDays, partnerName, onClose }:
                             fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif",
                         }}
                     >
-                        solo-days.app
+                        soloday.onrender.com
                     </div>
                 </div>
 
