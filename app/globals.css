@@ -524,9 +524,21 @@ input[type="date"]:focus {
    Toast Notification
    ========================================== */
 
+@keyframes toastSlideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 .toast {
   position: fixed;
-  bottom: 32px;
+  top: 24px;
   left: 50%;
   transform: translateX(-50%);
   padding: 12px 24px;
@@ -538,16 +550,19 @@ input[type="date"]:focus {
   box-shadow: var(--shadow-lg);
   white-space: nowrap;
   pointer-events: none;
+  animation: toastSlideDown 0.4s var(--ease-out-expo) forwards;
 }
 
 .toast-success {
-  background: #065f46;
-  color: #d1fae5;
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
 }
 
 .toast-error {
-  background: #991b1b;
-  color: #fecaca;
+  background: var(--bg-card);
+  color: #dc2626;
+  border: 1px solid #fecaca;
 }
 
 /* ==========================================

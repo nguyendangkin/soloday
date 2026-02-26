@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useCallback, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { exportBackup, importBackup } from "@/lib/storage";
 
 export default function BackupRestore() {
@@ -78,15 +79,17 @@ export default function BackupRestore() {
                 />
             </div>
 
-            {/* Toast notification */}
-            {toast && (
+            {/* Toast notification — Portal to body to escape transform stacking context */}
+            {toast && createPortal(
                 <div
-                    className={`toast animate-fade-in-up ${toast.type === "success" ? "toast-success" : "toast-error"
+                    className={`toast ${toast.type === "success" ? "toast-success" : "toast-error"
                         }`}
                 >
                     {toast.message}
-                </div>
+                </div>,
+                document.body
             )}
         </>
     );
 }
+

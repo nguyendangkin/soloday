@@ -89,7 +89,7 @@ export default function CongratulationModal({ totalDays, partnerName, onClose }:
                         top: 12,
                         right: 12,
                         background: "#f3f4f6",
-                        border: "1px solid #e5e7eb",
+                        border: "none",
                         fontSize: 14,
                         cursor: "pointer",
                         color: "#6b7280",
