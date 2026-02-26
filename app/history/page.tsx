@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { getLoveHistory, removeLoveHistory } from "@/lib/storage";
 import type { LoveHistory } from "@/lib/storage";
@@ -187,7 +187,7 @@ interface HistoryCardProps {
 function HistoryCard({ record, index, onDelete }: HistoryCardProps) {
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const achievement = getLatestAchievement(record.totalDays);
-
+    const exportRef = useRef<HTMLDivElement>(null);
 
     const startDate = new Date(record.startDate);
     const endDate = new Date(record.endDate);
@@ -196,10 +196,11 @@ function HistoryCard({ record, index, onDelete }: HistoryCardProps) {
         d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
 
     const handleDownload = useCallback(async () => {
-        const el = document.getElementById(`history-card-${record.id}`);
+        const el = exportRef.current;
         if (!el) return;
         try {
             const { toPng } = await import("html-to-image");
+            await new Promise((resolve) => setTimeout(resolve, 50));
             const dataUrl = await toPng(el, {
                 pixelRatio: 2,
                 quality: 1,
@@ -213,7 +214,7 @@ function HistoryCard({ record, index, onDelete }: HistoryCardProps) {
         } catch {
             alert("Không thể tải ảnh. Vui lòng thử lại!");
         }
-    }, [record.id, record.totalDays]);
+    }, [record.totalDays]);
 
     const delayClass = index < 6 ? `delay-${(index + 1) * 100}` : "";
 
@@ -239,6 +240,34 @@ function HistoryCard({ record, index, onDelete }: HistoryCardProps) {
 
                 {/* Heart */}
                 <div style={{ fontSize: 32, marginBottom: 8 }}>💖</div>
+
+                {/* Achievement badge */}
+                {achievement && (
+                    <div
+                        style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 6,
+                            padding: "6px 14px",
+                            borderRadius: 9999,
+                            border: "1px solid #fce7f3",
+                            background: "#fdf2f8",
+                            marginBottom: 14,
+                        }}
+                    >
+                        <span style={{ fontSize: 14 }}>{achievement.icon}</span>
+                        <span
+                            style={{
+                                fontSize: 12,
+                                fontWeight: 600,
+                                color: "#1a1a1a",
+                                fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif",
+                            }}
+                        >
+                            {achievement.name}
+                        </span>
+                    </div>
+                )}
 
                 {/* Days number */}
                 <div
@@ -281,34 +310,6 @@ function HistoryCard({ record, index, onDelete }: HistoryCardProps) {
                         }}
                     >
                         ❤️ {record.partnerName}
-                    </div>
-                )}
-
-                {/* Achievement badge */}
-                {achievement && (
-                    <div
-                        style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: 6,
-                            padding: "6px 14px",
-                            borderRadius: 9999,
-                            border: "1px solid #fce7f3",
-                            background: "#fdf2f8",
-                            marginBottom: 14,
-                        }}
-                    >
-                        <span style={{ fontSize: 14 }}>{achievement.icon}</span>
-                        <span
-                            style={{
-                                fontSize: 12,
-                                fontWeight: 600,
-                                color: "#1a1a1a",
-                                fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif",
-                            }}
-                        >
-                            {achievement.name}
-                        </span>
                     </div>
                 )}
 
@@ -388,6 +389,48 @@ function HistoryCard({ record, index, onDelete }: HistoryCardProps) {
                         </button>
                     </div>
                 )}
+            </div>
+
+            {/* Hidden off-screen export wrapper with gradient margin */}
+            <div style={{ position: "absolute", left: "-9999px", top: 0, opacity: 0, pointerEvents: "none" }}>
+                <div
+                    ref={exportRef}
+                    style={{
+                        padding: "40px",
+                        background: "linear-gradient(135deg, #fff5f5 0%, #fce7f3 100%)",
+                        borderRadius: 28,
+                        width: "400px",
+                        boxSizing: "border-box",
+                    }}
+                >
+                    <div
+                        style={{
+                            background: "linear-gradient(145deg, #fff5f5 0%, #ffffff 40%, #fef3f8 100%)",
+                            border: "1px solid #fce7f3",
+                            borderRadius: 20,
+                            padding: "32px 24px 24px",
+                            textAlign: "center",
+                            boxShadow: "0 4px 16px rgba(244, 114, 182, 0.08)",
+                            position: "relative",
+                            overflow: "hidden",
+                        }}
+                    >
+                        <div style={{ position: "absolute", top: 10, left: 14, fontSize: 14, opacity: 0.2 }}>💕</div>
+                        <div style={{ position: "absolute", top: 12, right: 14, fontSize: 12, opacity: 0.15 }}>💗</div>
+                        <div style={{ fontSize: 32, marginBottom: 8 }}>💖</div>
+                        {achievement && (
+                            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "6px 14px", borderRadius: 9999, border: "1px solid #fce7f3", background: "#fdf2f8", marginBottom: 14 }}>
+                                <span style={{ fontSize: 14 }}>{achievement.icon}</span>
+                                <span style={{ fontSize: 12, fontWeight: 600, color: "#1a1a1a", fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif" }}>{achievement.name}</span>
+                            </div>
+                        )}
+                        <div style={{ fontSize: "clamp(28px, 8vw, 40px)", fontWeight: 800, letterSpacing: "-0.04em", lineHeight: 1, color: "#111111", marginBottom: 4, fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif" }}>{record.totalDays.toLocaleString()}</div>
+                        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#9ca3af", marginBottom: 16, fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif" }}>ngày solo đã kết thúc</div>
+                        {record.partnerName && <div style={{ fontSize: 12, fontWeight: 500, fontStyle: "italic", color: "#f472b6", marginBottom: 14, fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif" }}>❤️ {record.partnerName}</div>}
+                        <div style={{ fontSize: 12, color: "#9ca3af", fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif" }}>{new Date(record.startDate).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" })} → {new Date(record.endDate).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" })}</div>
+                        <div style={{ marginTop: 14, fontSize: 9, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", color: "#d1d5db", fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif" }}>soloday.onrender.com</div>
+                    </div>
+                </div>
             </div>
         </div>
     );

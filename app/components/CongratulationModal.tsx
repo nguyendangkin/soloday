@@ -29,20 +29,19 @@ export default function CongratulationModal({ totalDays, partnerName, onClose }:
     const achievement = getLatestAchievement(totalDays);
     const quote = getCongratQuote(totalDays, partnerName);
     const cardRef = useRef<HTMLDivElement>(null);
+    const exportRef = useRef<HTMLDivElement>(null);
 
     const handleDownload = useCallback(async () => {
-        if (!cardRef.current) return;
+        if (!exportRef.current) return;
 
         try {
             const { toPng } = await import("html-to-image");
-            const dataUrl = await toPng(cardRef.current, {
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            const dataUrl = await toPng(exportRef.current, {
                 pixelRatio: 2,
                 quality: 1,
                 cacheBust: true,
-                style: {
-                    transform: "none",
-                    animation: "none",
-                },
+                style: { transform: "none", animation: "none" },
             });
 
             const link = document.createElement("a");
@@ -301,6 +300,53 @@ export default function CongratulationModal({ totalDays, partnerName, onClose }:
                         }}
                     >
                         soloday.onrender.com
+                    </div>
+                </div>
+
+                {/* Hidden off-screen export wrapper with gradient margin */}
+                <div style={{ position: "absolute", left: "-9999px", top: 0, opacity: 0, pointerEvents: "none" }}>
+                    <div
+                        ref={exportRef}
+                        style={{
+                            padding: "40px",
+                            background: "linear-gradient(135deg, #fff5f5 0%, #fce7f3 100%)",
+                            borderRadius: 28,
+                            width: "400px",
+                            boxSizing: "border-box",
+                        }}
+                    >
+                        <div
+                            ref={cardRef}
+                            style={{
+                                background: "linear-gradient(145deg, #fff5f5 0%, #ffffff 40%, #fef3f8 100%)",
+                                border: "1px solid #fce7f3",
+                                borderRadius: 20,
+                                padding: "40px 28px 32px",
+                                textAlign: "center",
+                                boxShadow: "0 8px 32px rgba(244, 114, 182, 0.12)",
+                                position: "relative",
+                                overflow: "hidden",
+                            }}
+                        >
+                            {/* Decorative hearts */}
+                            <div style={{ position: "absolute", top: 12, left: 16, fontSize: 18, opacity: 0.3 }}>💕</div>
+                            <div style={{ position: "absolute", top: 16, right: 18, fontSize: 14, opacity: 0.25 }}>💗</div>
+                            <div style={{ position: "absolute", bottom: 40, left: 20, fontSize: 12, opacity: 0.2 }}>✨</div>
+                            <div style={{ position: "absolute", bottom: 50, right: 16, fontSize: 14, opacity: 0.2 }}>🌹</div>
+                            <div style={{ fontSize: 40, marginBottom: 12 }}>💖</div>
+                            {achievement && (
+                                <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 9999, border: "1px solid #fce7f3", background: "#fdf2f8", marginBottom: 14 }}>
+                                    <span style={{ fontSize: 16 }}>{achievement.icon}</span>
+                                    <span style={{ fontSize: 13, fontWeight: 600, color: "#1a1a1a", fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif" }}>{achievement.name}</span>
+                                </div>
+                            )}
+                            <div style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.04em", textTransform: "uppercase", color: "#ec4899", marginBottom: 16, fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif" }}>Chúc mừng!</div>
+                            <div style={{ fontSize: "clamp(36px, 10vw, 52px)", fontWeight: 800, letterSpacing: "-0.04em", lineHeight: 1, color: "#111111", marginBottom: 6, fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif" }}>{totalDays.toLocaleString()}</div>
+                            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#9ca3af", marginBottom: 20, fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif" }}>ngày solo đã kết thúc 🎉</div>
+                            {partnerName && <div style={{ fontSize: 13, fontWeight: 500, fontStyle: "italic", color: "#f472b6", marginBottom: 18, fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif" }}>❤️ {partnerName}</div>}
+                            <p style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.6, maxWidth: 280, margin: "0 auto", fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif" }}>&quot;{quote}&quot;</p>
+                            <div style={{ marginTop: 20, fontSize: 10, fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", color: "#d1d5db", fontFamily: "'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif" }}>soloday.onrender.com</div>
+                        </div>
                     </div>
                 </div>
 
