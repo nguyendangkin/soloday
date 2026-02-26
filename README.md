@@ -1,113 +1,70 @@
 # Solo Days — Đếm Ngày Solo 🥰
 
-> Bạn đã solo bao lâu rồi? Đếm ngày, mở khóa thành tựu vui nhộn, và chia sẻ với bạn bè!
+> Bạn đã solo bao lâu rồi? Đếm ngày, mở khóa thành tựu vui nhộn, và chia sẻ niềm vui với bạn bè!
 
-🔗 **Live Demo:** [soloday.onrender.com](https://soloday.onrender.com)
+🔗 **Dùng thử ngay:** [soloday.onrender.com](https://soloday.onrender.com)
 
 ---
 
-## ✨ Tính năng
+## Solo Days là gì?
 
-- **🔢 Bộ đếm ngày solo** — Xem bạn đã solo bao nhiêu ngày, giờ, phút, giây (realtime)
-- **🏆 20 thành tựu** — Mở khóa badge từ 7 ngày đến 60 năm (✨ Khởi Đầu Vui → 🌌 Vũ Trụ)
-- **📸 Chia sẻ ảnh** — Tải card chia sẻ đẹp để khoe với bạn bè
-- **💕 Lịch sử tình yêu** — Khi hết solo, cuộc tình được lưu lại cùng thành tựu
-- **💾 Backup & Restore** — Sao lưu và khôi phục dữ liệu bằng file JSON
-- **📱 PWA** — Cài đặt trực tiếp lên điện thoại như app native
-- **⚡ Offline** — Hoạt động kể cả khi không có mạng (Service Worker)
-- **📅 Chọn ngày bắt đầu** — Date picker tinh tế, chọn đúng ngày bạn bắt đầu solo
+Solo Days là một ứng dụng nhỏ xinh giúp bạn **đếm ngày solo** — không phải để buồn, mà để tận hưởng! Mỗi ngày trôi qua, bạn lại mở khóa thêm thành tựu mới, nhận được những lời động viên đáng yêu, và có thể tạo ảnh chia sẻ cực đẹp để khoe với bạn bè.
 
-## 🛠️ Tech Stack
+Vì yêu bản thân là điều tuyệt vời nhất! 💛
 
-| Công nghệ | Phiên bản |
-|---|---|
-| **Next.js** | 16 |
-| **React** | 19 |
-| **TypeScript** | 5 |
-| **CSS** | Vanilla (không framework) |
-| **Testing** | Vitest + Testing Library |
-| **Export** | Static HTML (output: export) |
+---
 
-## 🚀 Chạy local
+## ✨ Bạn có thể làm gì?
 
-```bash
-# Clone repo
-git clone https://github.com/nguyendangkin/soloday.git
-cd soloday
+### � Đếm ngày realtime
+Xem bạn đã solo bao nhiêu ngày, giờ, phút, giây — cập nhật liên tục từng giây.
 
-# Cài dependencies
-npm install
+### 🏆 Mở khóa 20 thành tựu
+Từ **✨ Khởi Đầu Vui** (7 ngày) đến **🌌 Vũ Trụ** (60 năm) — mỗi mốc đều có badge và lời chúc riêng.
 
-# Chạy dev server
-npm run dev
-```
+### 📸 Chia sẻ với bạn bè
+Tạo card chia sẻ đẹp, tải xuống dạng ảnh và gửi cho bạn bè qua Zalo, Messenger, Instagram...
 
-Mở [http://localhost:3000](http://localhost:3000) để xem app.
+### 💕 Lịch sử tình yêu
+Khi bạn tìm được người ấy, cuộc hành trình solo sẽ được lưu lại trong **Lịch sử Tình Yêu** — ghi nhận từng chặng đường bạn đã đi qua.
 
-## 📦 Build & Deploy
+### 💾 Sao lưu dữ liệu
+Không sợ mất dữ liệu! Xuất file backup và khôi phục bất cứ lúc nào.
 
-```bash
-# Build static site
-npm run build
+### 📱 Cài như app điện thoại
+Thêm vào màn hình chính, dùng như app native — không cần tải từ App Store.
 
-# Output nằm trong thư mục /out
-```
+### ⚡ Hoạt động offline
+Không có WiFi? Không sao! App vẫn chạy mượt mà.
 
-App được build thành static HTML, có thể deploy lên bất kỳ hosting nào (Render, Vercel, Netlify, GitHub Pages...).
+---
 
-## 🧪 Testing
-
-```bash
-# Chạy test
-npm test
-
-# Chạy test (watch mode)
-npm run test:watch
-```
-
-## 📂 Cấu trúc dự án
-
-```
-soloday/
-├── app/
-│   ├── components/       # UI components
-│   │   ├── Achievements.tsx     # Hệ thống thành tựu
-│   │   ├── BackupRestore.tsx    # Sao lưu & khôi phục
-│   │   ├── CongratulationModal.tsx  # Modal chúc mừng hết solo
-│   │   ├── Counter.tsx          # Bộ đếm realtime
-│   │   ├── DatePicker.tsx       # Chọn ngày bắt đầu
-│   │   ├── InstallPWA.tsx       # Nút cài PWA
-│   │   ├── ShareCard.tsx        # Card chia sẻ ảnh
-│   │   └── Footer.tsx           # Footer
-│   ├── counter/          # Trang đếm ngày
-│   ├── history/          # Trang lịch sử tình yêu
-│   ├── globals.css       # Styles
-│   ├── layout.tsx        # Root layout + SEO
-│   └── page.tsx          # Trang chủ
-├── lib/
-│   ├── achievements.ts   # Logic thành tựu (20 mốc)
-│   ├── storage.ts        # LocalStorage + Backup/Restore
-│   └── time-utils.ts     # Tính toán thời gian
-├── public/
-│   ├── manifest.json     # PWA manifest
-│   ├── sw.js            # Service Worker
-│   └── icons/           # App icons
-└── package.json
-```
-
-## 🎯 Hệ thống thành tựu
+## 🎯 Bảng thành tựu
 
 | Mốc | Badge | Tên |
 |-----|-------|-----|
 | 7 ngày | ✨ | Khởi Đầu Vui |
 | 30 ngày | 🎒 | Nhà Thám Hiểm |
 | 100 ngày | 🎯 | Bách Nhật |
+| 200 ngày | 🌿 | An Nhiên |
 | 365 ngày | 🎉 | 1 Năm Rực Rỡ |
+| 500 ngày | ☕ | Zen Master |
+| 730 ngày | 📖 | Hiền Triết |
 | 1,000 ngày | 🚀 | Vượt Ngàn |
 | 1,825 ngày | ⭐ | Huyền Thoại |
 | 3,650 ngày | 🌟 | Vĩnh Cửu |
-| ... | ... | ... |
+| 5,475 ngày | 💎 | Kim Cương |
+| 7,300 ngày | 👑 | Bạch Kim |
+| 9,125 ngày | 🏛️ | Tứ Phần Thế Kỷ |
+| 10,950 ngày | 🦪 | Ngọc Trai |
+| 12,775 ngày | 🪸 | San Hô |
+| 14,600 ngày | ❤️‍🔥 | Hồng Ngọc |
+| 16,425 ngày | 💙 | Lam Ngọc |
+| 18,250 ngày | 🥇 | Vàng Ròng |
+| 20,075 ngày | 💚 | Ngọc Lục Bảo |
 | 21,900 ngày | 🌌 | Vũ Trụ |
+
+---
 
 ## 📄 License
 
