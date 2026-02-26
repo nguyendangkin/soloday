@@ -156,11 +156,20 @@ export async function importBackup(
         return { success: false, message: "Không hỗ trợ trên server." };
     }
 
+    // Security: limit file size to 1MB to prevent DoS
+    const MAX_FILE_SIZE = 1024 * 1024; // 1MB
+    if (file.size > MAX_FILE_SIZE) {
+        return {
+            success: false,
+            message: "File backup quá lớn (tối đa 1MB).",
+        };
+    }
+
     try {
         const text = await file.text();
         const parsed = JSON.parse(text) as BackupData;
 
-        // Validate structure
+        // Validate top-level structure
         if (parsed.appId !== "solo-days" || typeof parsed.version !== "number") {
             return {
                 success: false,
@@ -182,12 +191,41 @@ export async function importBackup(
             localStorage.removeItem(STORAGE_KEY);
         }
 
-        // Write loveHistory
+        // Write loveHistory with per-record validation
         if (Array.isArray(parsed.data.loveHistory)) {
-            localStorage.setItem(
-                HISTORY_KEY,
-                JSON.stringify(parsed.data.loveHistory)
-            );
+            const MAX_RECORDS = 500;
+            const MAX_NAME_LENGTH = 100;
+            const validated = parsed.data.loveHistory
+                .slice(0, MAX_RECORDS)
+                .filter((record): record is LoveHistory => {
+                    // Validate each record has required fields with correct types
+                    if (typeof record !== "object" || record === null) return false;
+                    if (typeof record.id !== "string") return false;
+                    if (typeof record.startDate !== "string") return false;
+                    if (typeof record.endDate !== "string") return false;
+                    if (typeof record.totalDays !== "number") return false;
+                    // Validate dates are parseable
+                    if (isNaN(new Date(record.startDate).getTime())) return false;
+                    if (isNaN(new Date(record.endDate).getTime())) return false;
+                    return true;
+                })
+                .map((record) => ({
+                    id: String(record.id).slice(0, 20),
+                    startDate: record.startDate,
+                    endDate: record.endDate,
+                    totalDays: Math.max(0, Math.floor(record.totalDays)),
+                    // Sanitize partnerName: trim, limit length, strip control chars
+                    ...(record.partnerName
+                        ? {
+                            partnerName: String(record.partnerName)
+                                .trim()
+                                .slice(0, MAX_NAME_LENGTH)
+                                .replace(/[\x00-\x1f\x7f]/g, ""),
+                        }
+                        : {}),
+                }));
+
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(validated));
         }
 
         return { success: true, message: "Khôi phục dữ liệu thành công! 🎉" };
