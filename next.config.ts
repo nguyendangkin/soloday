@@ -1,28 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "export",
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
   images: {
     formats: ["image/webp", "image/avif"],
+    unoptimized: true, // Required for static export
   },
-  async headers() {
-    return [
-      {
-        source: "/(.*)",
-        headers: [
-          { key: "X-Frame-Options", value: "DENY" },
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          {
-            key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
-          },
-        ],
-      },
-    ];
-  },
+  // Security headers should be configured on hosting platform
+  // (Vercel: vercel.json, Netlify: _headers, nginx: server config)
 };
 
 export default nextConfig;
