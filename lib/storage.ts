@@ -173,7 +173,7 @@ export async function importBackup(
         if ((parsed.appId !== "soloday" && parsed.appId !== "solo-days") || typeof parsed.version !== "number") {
             return {
                 success: false,
-                message: "File không đúng định dạng Solo Days.",
+                message: "File không đúng định dạng Solo Day.",
             };
         }
         if (!parsed.data || typeof parsed.data !== "object") {

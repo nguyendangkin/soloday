@@ -1,4 +1,4 @@
-# Solo Days — Đếm Ngày Solo 🥰
+# Solo Day — Đếm Ngày Solo 🥰
 
 > Bạn đã solo bao lâu rồi? Đếm ngày, mở khóa thành tựu vui nhộn, và chia sẻ niềm vui với bạn bè!
 
@@ -6,9 +6,9 @@
 
 ---
 
-## Solo Days là gì?
+## Solo Day là gì?
 
-Solo Days là một ứng dụng nhỏ xinh giúp bạn **đếm ngày solo** — không phải để buồn, mà để tận hưởng! Mỗi ngày trôi qua, bạn lại mở khóa thêm thành tựu mới, nhận được những lời động viên đáng yêu, và có thể tạo ảnh chia sẻ cực đẹp để khoe với bạn bè.
+Solo Day là một ứng dụng nhỏ xinh giúp bạn **đếm ngày solo** — không phải để buồn, mà để tận hưởng! Mỗi ngày trôi qua, bạn lại mở khóa thêm thành tựu mới, nhận được những lời động viên đáng yêu, và có thể tạo ảnh chia sẻ cực đẹp để khoe với bạn bè.
 
 Vì yêu bản thân là điều tuyệt vời nhất! 💛
 
@@ -33,9 +33,6 @@ Không sợ mất dữ liệu! Xuất file backup và khôi phục bất cứ l�
 
 ### 📱 Cài như app điện thoại
 Thêm vào màn hình chính, dùng như app native — không cần tải từ App Store.
-
-### ⚡ Hoạt động offline
-Không có WiFi? Không sao! App vẫn chạy mượt mà.
 
 ---
 

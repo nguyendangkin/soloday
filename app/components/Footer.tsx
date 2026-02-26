@@ -20,7 +20,7 @@ export default function Footer() {
             </p>
             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 12 }}>
                 <a
-                    href="https://github.com/nguyendangkin/soloday"
+                    href="https://github.com/nguyendangkin"
                     target="_blank"
                     rel="noopener noreferrer"
                     title="GitHub"

@@ -142,6 +142,13 @@ export default function Home() {
           </div>
         ) : (
           <div className="animate-fade-in-scale">
+            <button
+              className="btn btn-ghost"
+              onClick={() => setShowPicker(false)}
+              style={{ width: "100%", maxWidth: 380, margin: "0 auto 10px", display: "block", fontSize: 13 }}
+            >
+              ← Quay lại
+            </button>
             <DatePicker onSelect={handleDateSelect} />
           </div>
         )}
@@ -160,7 +167,6 @@ export default function Home() {
         {[
           { label: "Thành tựu", value: "20" },
           { label: "Cột mốc", value: "7→21900" },
-          { label: "Offline", value: "100%" },
         ].map((stat) => (
           <div key={stat.label} style={{ textAlign: "center" }}>
             <div

@@ -126,7 +126,7 @@ export default function InstallPWA() {
                             <div className="install-modal-icon">
                                 <Image
                                     src="/icons/icon-192x192.png"
-                                    alt="Solo Days"
+                                    alt="Solo Day"
                                     width={72}
                                     height={72}
                                     style={{ borderRadius: 16 }}
@@ -134,7 +134,7 @@ export default function InstallPWA() {
                             </div>
 
                             {/* App info */}
-                            <h3 className="install-modal-title">Solo Days</h3>
+                            <h3 className="install-modal-title">Solo Day</h3>
                             <p className="install-modal-desc">
                                 Đếm ngày solo · Thành tựu · Chia sẻ
                             </p>

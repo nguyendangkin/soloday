@@ -91,7 +91,7 @@ export default function CounterPage() {
                             color: "var(--text)",
                         }}
                     >
-                        Solo Days ✌️
+                        Solo Day ✌️
                     </span>
                     <button
                         onClick={() => router.replace("/")}

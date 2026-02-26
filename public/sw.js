@@ -1,4 +1,4 @@
-// Solo Days — Service Worker v3 (Optimized)
+// Solo Day — Service Worker v3 (Optimized)
 const CACHE_NAME = "soloday-v4";
 
 // Static assets to precache on install

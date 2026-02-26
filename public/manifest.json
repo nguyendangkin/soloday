@@ -1,6 +1,6 @@
 {
-    "name": "Solo Days — Đếm Ngày Solo",
-    "short_name": "Solo Days",
+    "name": "Solo Day — Đếm Ngày Solo",
+    "short_name": "Solo Day",
     "description": "Đếm ngày solo, mở khóa thành tựu vui nhộn, chia sẻ với bạn bè!",
     "start_url": "/",
     "display": "standalone",

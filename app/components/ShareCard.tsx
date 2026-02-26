@@ -149,7 +149,7 @@ export default function ShareCard({ totalDays }: ShareCardProps) {
                 >
                     {mood && (
                         <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: note ? 6 : 0 }}>
-                            Cảm xúc: {mood.emoji} {mood.label}
+                            Đang cảm thấy {mood.emoji} {mood.label}
                         </div>
                     )}
                     {note && (

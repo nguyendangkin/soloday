@@ -16,12 +16,12 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://soloday.onrender.com"),
-  title: "Solo Days — Đếm Ngày Solo",
+  title: "Solo Day — Đếm Ngày Solo",
   description:
     "Bạn đã solo bao lâu rồi? Đếm ngày, mở khóa thành tựu vui nhộn, và chia sẻ với bạn bè!",
-  keywords: ["solo days", "đếm ngày", "single life", "fun counter", "achievements"],
+  keywords: ["solo day", "đếm ngày", "single life", "fun counter", "achievements"],
   openGraph: {
-    title: "Solo Days — Đếm Ngày Solo",
+    title: "Solo Day — Đếm Ngày Solo",
     description:
       "Đếm ngày solo, mở khóa thành tựu vui nhộn, chia sẻ với bạn bè!",
     type: "website",
@@ -32,13 +32,13 @@ export const metadata: Metadata = {
         url: "/icons/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Solo Days — Đếm Ngày Solo",
+        alt: "Solo Day — Đếm Ngày Solo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Solo Days — Đếm Ngày Solo",
+    title: "Solo Day — Đếm Ngày Solo",
     description: "Đếm ngày solo, mở khóa thành tựu, chia sẻ niềm vui!",
     images: ["/icons/og-image.png"],
   },
@@ -56,7 +56,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Solo Days" />
+        <meta name="apple-mobile-web-app-title" content="Solo Day" />
         {/* PWA: chặn native prompt + đăng ký Service Worker */}
         <script
           dangerouslySetInnerHTML={{
