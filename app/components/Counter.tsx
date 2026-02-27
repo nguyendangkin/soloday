@@ -25,9 +25,28 @@ export default function Counter({ startDate }: CounterProps) {
 
     if (!mounted) {
         return (
-            <div style={{ textAlign: "center", padding: "40px 0" }}>
-                <div className="animate-pulse" style={{ color: "var(--text-muted)" }}>
-                    Đang tính toán...
+            <div style={{ textAlign: "center", padding: "20px 0" }}>
+                {/* Skeleton: số ngày lớn */}
+                <div style={{ marginBottom: 8, display: "flex", justifyContent: "center" }}>
+                    <div className="skeleton" style={{ width: 140, height: 80, borderRadius: 12 }} />
+                </div>
+                {/* Skeleton: label "ngày solo" */}
+                <div style={{ display: "flex", justifyContent: "center", marginBottom: 28 }}>
+                    <div className="skeleton skeleton-round" style={{ width: 70, height: 12 }} />
+                </div>
+                {/* Skeleton: giờ / phút / giây */}
+                <div style={{ display: "flex", justifyContent: "center", gap: "clamp(20px, 6vw, 36px)", marginBottom: 28 }}>
+                    {[0, 1, 2].map((i) => (
+                        <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                            <div className="skeleton" style={{ width: 52, height: 36, borderRadius: 8 }} />
+                            <div className="skeleton skeleton-round" style={{ width: 28, height: 10 }} />
+                        </div>
+                    ))}
+                </div>
+                {/* Skeleton: message */}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                    <div className="skeleton skeleton-round" style={{ width: 220, height: 13 }} />
+                    <div className="skeleton skeleton-round" style={{ width: 160, height: 13 }} />
                 </div>
             </div>
         );

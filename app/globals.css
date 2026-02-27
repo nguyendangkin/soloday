@@ -221,6 +221,18 @@ body {
   animation: pulse 2s ease-in-out infinite;
 }
 
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-subtle) 25%, var(--bg-hover) 50%, var(--bg-subtle) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-round {
+  border-radius: var(--radius-full);
+}
+
 .delay-100 {
   animation-delay: 0.1s;
 }

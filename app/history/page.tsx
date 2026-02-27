@@ -26,16 +26,61 @@ export default function HistoryPage() {
 
     if (!mounted) {
         return (
-            <main
-                style={{
-                    minHeight: "100dvh",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <div className="animate-pulse" style={{ color: "var(--text-muted)" }}>
-                    Đang tải...
+            <main style={{ minHeight: "100dvh", padding: "32px 0 100px" }}>
+                <div className="container">
+                    {/* Skeleton: Header */}
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
+                        <div className="skeleton skeleton-round" style={{ width: 120, height: 14 }} />
+                        <div className="skeleton skeleton-round" style={{ width: 72, height: 14 }} />
+                    </div>
+
+                    {/* Skeleton: 2 history cards */}
+                    {[0, 1].map((i) => (
+                        <div key={i} style={{ marginBottom: i === 0 ? 0 : 0 }}>
+                            {/* Divider with label skeleton */}
+                            <div style={{ display: "flex", alignItems: "center", gap: 12, margin: i === 0 ? "0 0 14px" : "24px 0 14px" }}>
+                                <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+                                <div className="skeleton skeleton-round" style={{ width: 70, height: 11 }} />
+                                <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+                            </div>
+
+                            {/* Card skeleton */}
+                            <div style={{
+                                background: "linear-gradient(145deg, #fff5f5 0%, #ffffff 40%, #fef3f8 100%)",
+                                border: "1px solid #fce7f3",
+                                borderRadius: 20,
+                                padding: "32px 24px 24px",
+                                textAlign: "center",
+                            }}>
+                                {/* Icon */}
+                                <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
+                                    <div className="skeleton" style={{ width: 40, height: 40, borderRadius: "50%" }} />
+                                </div>
+                                {/* Badge */}
+                                <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
+                                    <div className="skeleton skeleton-round" style={{ width: 120, height: 28 }} />
+                                </div>
+                                {/* Days number */}
+                                <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
+                                    <div className="skeleton" style={{ width: 80, height: 44, borderRadius: 8 }} />
+                                </div>
+                                {/* Label */}
+                                <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
+                                    <div className="skeleton skeleton-round" style={{ width: 110, height: 11 }} />
+                                </div>
+                                {/* Date range */}
+                                <div style={{ display: "flex", justifyContent: "center" }}>
+                                    <div className="skeleton skeleton-round" style={{ width: 150, height: 12 }} />
+                                </div>
+                            </div>
+
+                            {/* Button skeletons */}
+                            <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+                                <div className="skeleton" style={{ flex: 1, height: 42, borderRadius: 14 }} />
+                                <div className="skeleton" style={{ width: 80, height: 42, borderRadius: 14 }} />
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </main>
         );

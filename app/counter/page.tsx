@@ -55,16 +55,67 @@ export default function CounterPage() {
 
     if (!mounted || !startDate) {
         return (
-            <main
-                style={{
-                    minHeight: "100dvh",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <div className="animate-pulse" style={{ color: "var(--text-muted)" }}>
-                    Đang tải...
+            <main style={{ minHeight: "100dvh", padding: "32px 0 100px" }}>
+                <div className="container">
+                    {/* Skeleton: Header */}
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 40 }}>
+                        <div className="skeleton skeleton-round" style={{ width: 80, height: 14 }} />
+                        <div className="skeleton skeleton-round" style={{ width: 72, height: 14 }} />
+                    </div>
+
+                    {/* Skeleton: Counter */}
+                    <div style={{ textAlign: "center", marginBottom: 40 }}>
+                        <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
+                            <div className="skeleton" style={{ width: 140, height: 80, borderRadius: 12 }} />
+                        </div>
+                        <div style={{ display: "flex", justifyContent: "center", marginBottom: 28 }}>
+                            <div className="skeleton skeleton-round" style={{ width: 70, height: 12 }} />
+                        </div>
+                        <div style={{ display: "flex", justifyContent: "center", gap: "clamp(20px, 6vw, 36px)", marginBottom: 28 }}>
+                            {[0, 1, 2].map((i) => (
+                                <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                                    <div className="skeleton" style={{ width: 52, height: 36, borderRadius: 8 }} />
+                                    <div className="skeleton skeleton-round" style={{ width: 28, height: 10 }} />
+                                </div>
+                            ))}
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                            <div className="skeleton skeleton-round" style={{ width: 200, height: 13 }} />
+                            <div className="skeleton skeleton-round" style={{ width: 150, height: 13 }} />
+                        </div>
+                    </div>
+
+                    <div className="divider" style={{ marginBottom: 28 }} />
+
+                    {/* Skeleton: Achievements header */}
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                        <div className="skeleton skeleton-round" style={{ width: 70, height: 14 }} />
+                        <div className="skeleton skeleton-round" style={{ width: 36, height: 14 }} />
+                    </div>
+                    {/* Skeleton: Achievement rows */}
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 40 }}>
+                        {[0, 1, 2, 3].map((i) => (
+                            <div key={i} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", borderRadius: 14, background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+                                <div className="skeleton" style={{ width: 44, height: 44, borderRadius: 10, flexShrink: 0 }} />
+                                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
+                                    <div className="skeleton skeleton-round" style={{ width: "55%", height: 13 }} />
+                                    <div className="skeleton skeleton-round" style={{ width: "80%", height: 11 }} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="divider" style={{ marginBottom: 28 }} />
+
+                    {/* Skeleton: Share section */}
+                    <div style={{ marginBottom: 40 }}>
+                        <div className="skeleton skeleton-round" style={{ width: 50, height: 14, marginBottom: 14 }} />
+                        <div className="skeleton" style={{ width: "100%", height: 180, borderRadius: 20 }} />
+                        <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+                            <div className="skeleton" style={{ flex: 1, height: 44, borderRadius: 14 }} />
+                            <div className="skeleton" style={{ flex: 1, height: 44, borderRadius: 14 }} />
+                        </div>
+                    </div>
                 </div>
             </main>
         );
