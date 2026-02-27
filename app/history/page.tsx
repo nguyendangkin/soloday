@@ -195,9 +195,12 @@ function HistoryCard({ record, index, onDelete }: HistoryCardProps) {
     const formatDate = (d: Date) =>
         d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
 
+    const [isDownloading, setIsDownloading] = useState(false);
+
     const handleDownload = useCallback(async () => {
         const el = exportRef.current;
-        if (!el) return;
+        if (!el || isDownloading) return;
+        setIsDownloading(true);
         try {
             const { toPng } = await import("html-to-image");
             await new Promise((resolve) => setTimeout(resolve, 50));
@@ -213,8 +216,10 @@ function HistoryCard({ record, index, onDelete }: HistoryCardProps) {
             link.click();
         } catch {
             alert("Không thể tải ảnh. Vui lòng thử lại!");
+        } finally {
+            setIsDownloading(false);
         }
-    }, [record.totalDays]);
+    }, [record.totalDays, isDownloading]);
 
     const delayClass = index < 6 ? `delay-${(index + 1) * 100}` : "";
 
@@ -345,16 +350,43 @@ function HistoryCard({ record, index, onDelete }: HistoryCardProps) {
                 <button
                     className="btn btn-primary"
                     onClick={handleDownload}
+                    disabled={isDownloading}
                     style={{
                         flex: 1,
                         fontSize: 13,
                         padding: "10px 16px",
                         background: "#ec4899",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
+                        opacity: isDownloading ? 0.75 : 1,
+                        cursor: isDownloading ? "not-allowed" : "pointer",
+                        transition: "opacity 0.2s ease",
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "#db2777"; }}
+                    onMouseEnter={(e) => { if (!isDownloading) e.currentTarget.style.background = "#db2777"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.background = "#ec4899"; }}
                 >
-                    Chia sẻ ✌️
+                    {isDownloading ? (
+                        <>
+                            <svg
+                                width="13"
+                                height="13"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                style={{ animation: "spin 0.8s linear infinite" }}
+                            >
+                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                            </svg>
+                            Đang tạo ảnh...
+                        </>
+                    ) : (
+                        <>Chia sẻ ✌️</>
+                    )}
                 </button>
 
                 {!showConfirmDelete ? (

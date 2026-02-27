@@ -6,27 +6,35 @@ import { getShareQuote } from "@/lib/time-utils";
 
 interface ShareCardProps {
     totalDays: number;
+    disabled?: boolean;
 }
 
 const MOODS = [
-    { emoji: "😎", label: "Chill" },
-    { emoji: "😌", label: "Bình yên" },
-    { emoji: "🥲", label: "Hơi cô đơn" },
-    { emoji: "😤", label: "Căng thẳng" },
-    { emoji: "✨", label: "Tích cực" },
+    { emoji: "🚀", label: "Đang vào guồng" },
+    { emoji: "😌", label: "Bình yên thật sự" },
+    { emoji: "✨", label: "Sáng tạo bùng nổ" },
+    { emoji: "🎯", label: "Khóa mục tiêu rồi" },
+    { emoji: "🫶", label: "Ấm lòng lắm nha" },
+    { emoji: "🌙", label: "Chill thôi anh em" },
+    { emoji: "🤯", label: "Ủa hay vậy ta?!" },
+    { emoji: "🔥", label: "Đang cháy đây nè" },
+    { emoji: "😎", label: "Tự tin vào rồi đó" },
+    { emoji: "🌅", label: "Ngóng ngày mai ghê" },
 ];
 
-export default function ShareCard({ totalDays }: ShareCardProps) {
+export default function ShareCard({ totalDays, disabled = false }: ShareCardProps) {
     const achievement = getLatestAchievement(totalDays);
     const quote = getShareQuote(totalDays);
     const cardRef = useRef<HTMLDivElement>(null);
 
     const [mood, setMood] = useState<{ emoji: string; label: string } | null>(null);
     const [note, setNote] = useState("");
+    const [isDownloading, setIsDownloading] = useState(false);
 
     const handleDownloadCard = useCallback(async () => {
-        if (!cardRef.current) return;
+        if (!cardRef.current || isDownloading) return;
 
+        setIsDownloading(true);
         try {
             const { toPng } = await import("html-to-image");
             // Wait a tick for UI to stabilize
@@ -48,8 +56,10 @@ export default function ShareCard({ totalDays }: ShareCardProps) {
             link.click();
         } catch {
             alert("Không thể tải ảnh. Vui lòng thử lại!");
+        } finally {
+            setIsDownloading(false);
         }
-    }, [totalDays]);
+    }, [totalDays, isDownloading]);
 
     const cardContent = (
         <div
@@ -268,9 +278,39 @@ export default function ShareCard({ totalDays }: ShareCardProps) {
                 <button
                     className="btn btn-primary"
                     onClick={handleDownloadCard}
-                    style={{ flex: 1, fontSize: 14 }}
+                    disabled={isDownloading || disabled}
+                    style={{
+                        flex: 1,
+                        fontSize: 14,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: 8,
+                        opacity: (isDownloading || disabled) ? 0.4 : 1,
+                        cursor: (isDownloading || disabled) ? "not-allowed" : "pointer",
+                        transition: "opacity 0.2s ease",
+                    }}
                 >
-                    Chia sẻ với bạn bè ✌️
+                    {isDownloading ? (
+                        <>
+                            <svg
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                style={{ animation: "spin 0.8s linear infinite" }}
+                            >
+                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                            </svg>
+                            Đang tạo ảnh...
+                        </>
+                    ) : (
+                        <>Chia sẻ với bạn bè ✌️</>
+                    )}
                 </button>
             </div>
         </div>

@@ -96,17 +96,20 @@ export default function CounterPage() {
                     <button
                         onClick={() => router.replace("/")}
                         className="btn-fun"
+                        disabled={confetti}
                         style={{
                             background: "none",
                             border: "none",
                             color: "var(--text-muted)",
                             fontSize: 13,
                             fontWeight: 500,
-                            cursor: "pointer",
+                            cursor: confetti ? "not-allowed" : "pointer",
                             padding: "6px 0",
                             display: "flex",
                             alignItems: "center",
                             gap: 4,
+                            opacity: confetti ? 0.4 : 1,
+                            transition: "opacity 0.2s ease",
                         }}
                     >
                         <svg
@@ -145,7 +148,7 @@ export default function CounterPage() {
                     <h2 className="section-title" style={{ marginBottom: 14 }}>
                         Chia sẻ
                     </h2>
-                    <ShareCard totalDays={totalDays} />
+                    <ShareCard totalDays={totalDays} disabled={confetti} />
                 </div>
 
                 <div className="divider" style={{ marginBottom: 28 }} />
@@ -156,7 +159,13 @@ export default function CounterPage() {
                         <button
                             className="btn btn-ghost"
                             onClick={() => setShowReset(true)}
-                            style={{ fontSize: 13 }}
+                            disabled={confetti}
+                            style={{
+                                fontSize: 13,
+                                opacity: confetti ? 0.4 : 1,
+                                cursor: confetti ? "not-allowed" : "pointer",
+                                transition: "opacity 0.2s ease",
+                            }}
                         >
                             Đã có người yêu rồi! 🎉
                         </button>
@@ -175,7 +184,7 @@ export default function CounterPage() {
                             {/* Partner name input */}
                             <input
                                 type="text"
-                                placeholder="Tên người ấy (không bắt buộc) 💕"
+                                placeholder="Tên người ấy (không bắt buộc)"
                                 value={partnerName}
                                 onChange={(e) => setPartnerName(e.target.value)}
                                 style={{
@@ -201,14 +210,26 @@ export default function CounterPage() {
                                 <button
                                     className="btn btn-primary"
                                     onClick={() => setShowCongratModal(true)}
-                                    style={{ fontSize: 13 }}
+                                    disabled={confetti}
+                                    style={{
+                                        fontSize: 13,
+                                        opacity: confetti ? 0.4 : 1,
+                                        cursor: confetti ? "not-allowed" : "pointer",
+                                        transition: "opacity 0.2s ease",
+                                    }}
                                 >
                                     Xác nhận 🎊
                                 </button>
                                 <button
                                     className="btn btn-ghost"
                                     onClick={() => { setShowReset(false); setPartnerName(""); }}
-                                    style={{ fontSize: 13 }}
+                                    disabled={confetti}
+                                    style={{
+                                        fontSize: 13,
+                                        opacity: confetti ? 0.4 : 1,
+                                        cursor: confetti ? "not-allowed" : "pointer",
+                                        transition: "opacity 0.2s ease",
+                                    }}
                                 >
                                     Chưa đâu 😄
                                 </button>

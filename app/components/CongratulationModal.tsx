@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { getLatestAchievement } from "@/lib/achievements";
 
 interface CongratulationModalProps {
@@ -31,9 +31,12 @@ export default function CongratulationModal({ totalDays, partnerName, onClose }:
     const cardRef = useRef<HTMLDivElement>(null);
     const exportRef = useRef<HTMLDivElement>(null);
 
-    const handleDownload = useCallback(async () => {
-        if (!exportRef.current) return;
+    const [isDownloading, setIsDownloading] = useState(false);
 
+    const handleDownload = useCallback(async () => {
+        if (!exportRef.current || isDownloading) return;
+
+        setIsDownloading(true);
         try {
             const { toPng } = await import("html-to-image");
             await new Promise((resolve) => setTimeout(resolve, 50));
@@ -50,8 +53,10 @@ export default function CongratulationModal({ totalDays, partnerName, onClose }:
             link.click();
         } catch {
             alert("Không thể tải ảnh. Vui lòng thử lại!");
+        } finally {
+            setIsDownloading(false);
         }
-    }, [totalDays]);
+    }, [totalDays, isDownloading]);
 
     return (
         <div
@@ -355,19 +360,46 @@ export default function CongratulationModal({ totalDays, partnerName, onClose }:
                     <button
                         className="btn btn-primary"
                         onClick={handleDownload}
+                        disabled={isDownloading}
                         style={{
                             flex: 1,
                             fontSize: 14,
                             background: "#ec4899",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 8,
+                            opacity: isDownloading ? 0.75 : 1,
+                            cursor: isDownloading ? "not-allowed" : "pointer",
+                            transition: "opacity 0.2s ease",
                         }}
                         onMouseEnter={(e) => {
-                            e.currentTarget.style.background = "#db2777";
+                            if (!isDownloading) e.currentTarget.style.background = "#db2777";
                         }}
                         onMouseLeave={(e) => {
                             e.currentTarget.style.background = "#ec4899";
                         }}
                     >
-                        Chia sẻ ✌️
+                        {isDownloading ? (
+                            <>
+                                <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    style={{ animation: "spin 0.8s linear infinite" }}
+                                >
+                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                                </svg>
+                                Đang tạo ảnh...
+                            </>
+                        ) : (
+                            <>Chia sẻ ✌️</>
+                        )}
                     </button>
                 </div>
             </div>
